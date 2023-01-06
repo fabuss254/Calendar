@@ -58,10 +58,8 @@ async function GetCalendar(interaction) {
     await interaction.deferReply();
 
     if (!RequestCache[CalendarName] || RequestCache[CalendarName] + 3600000 < Date.now()){
-        RequestCache[CalendarName] = Date.now();
-
         let embed = {
-            "title": "Progression: demarrage..."
+            "title": "Progression: démarrage..."
         }
         let msg = {embeds: [embed]}
 
@@ -128,6 +126,7 @@ async function GetCalendar(interaction) {
 
         await sharp(RawImageLink).extract({ left: 6, top: 224, width: 1069, height: 441}).toFile(ImageLink)
         console.log("Calendar", CalendarName, "is now ready for usage !");
+        RequestCache[CalendarName] = Date.now();
     }
     
     return await interaction.editReply({
@@ -135,7 +134,6 @@ async function GetCalendar(interaction) {
         files: [ImageLink],
         embeds: [
             {
-                "type": "rich",
                 "title": `Emploi du temp ${CalendarName} pour la semaine ${Date.getWeek()}`,
                 "color": 0x4af96d,
                 "image": {
@@ -217,7 +215,6 @@ Bot.on(Events.InteractionCreate, async interaction => {
             "tts": false,
             "embeds": [
                 {
-                    "type": "rich",
                     "title": `Une erreur est survenu !`,
                     "description": `${e.message}`,
                     "color": 0xf94a4a,
