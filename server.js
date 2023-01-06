@@ -68,7 +68,7 @@ async function GetCalendar(interaction) {
             return await interaction.editReply(msg)
         }
 
-        console.log("Generating")
+        console.log(`Generating calendar ${CalendarName} for ${interaction.member.user.tag}`)
 
         const browser = await puppeteer.launch(process.platform == "win32" ? {} : {
             args: ['--no-sandbox']
@@ -101,7 +101,6 @@ async function GetCalendar(interaction) {
 
         // Wait for the calendar button appear and click it
         let CalendarButton = (await page.$x('//*[@id="GInterface.Instances[0].Instances[1]_Wrapper"]/li[4]'))[0]
-        console.log(CalendarButton)
         await CalendarButton.click()
 
         // Wait for search box to appear and type in put
