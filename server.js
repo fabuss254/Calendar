@@ -66,14 +66,13 @@ async function GetCalendar(interaction) {
         let msg = {embeds: [embed]}
 
         async function ChangeEmbed(newTitle) {
-            embed.title = `Progress: ${newTitle}...`
+            embed.title = `Progression: ${newTitle}...`
             return await interaction.editReply(msg)
         }
 
         console.log("Generating")
 
         const browser = await puppeteer.launch(process.platform == "win32" ? {} : {
-            executablePath: "usr/bin/chromium-browser",
             args: ['--no-sandbox']
         });
         const page = await browser.newPage();
@@ -179,7 +178,15 @@ Bot.on(Events.InteractionCreate, async interaction => {
             let Key = Choice.replaceAll("Lille | ", "")
             let Value = Choice
 
-            if (!Key.toLowerCase().match(focusedValue.toLowerCase())) continue;
+            let Args = focusedValue.split(" ")
+            let Pass = true
+            for (let Arg of Args){
+                if (!Key.toLowerCase().match(Arg.toLowerCase()))  {
+                    Pass = false
+                    break
+                }
+            }
+            if (!Pass) continue;
             
             CalendarChoices.push({name: Key, value: Value})
             if (CalendarChoices.length >= 20) break;
@@ -204,6 +211,7 @@ Bot.on(Events.InteractionCreate, async interaction => {
         }
     } catch(e) {
         console.log(e)
+        Busy = false
         return await interaction.editReply({
             "content": "",
             "tts": false,
