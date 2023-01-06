@@ -208,7 +208,7 @@ Bot.on(Events.InteractionCreate, async interaction => {
             await GetCalendar(interaction);
         }
     } catch(e) {
-        console.log(e)
+        console.log(e.stack)
         Busy = false
         return await interaction.editReply({
             "content": "",
@@ -216,7 +216,7 @@ Bot.on(Events.InteractionCreate, async interaction => {
             "embeds": [
                 {
                     "title": `Une erreur est survenu !`,
-                    "description": `${e.message}`,
+                    "description": `\`\`\`\n${e.stack}\`\`\``,
                     "color": 0xf94a4a,
                     "footer": {
                         "text": `Si le problème persiste, contactez Fabuss254#0001`
